@@ -1,6 +1,14 @@
+//// cli arg
+const args = process.argv.slice(2);
+var host = args[0];
+if (!host) host = 'http://localhost:8080';
+console.log(
+  "connecting to the host... : \n" +
+  "\t --> " + host + "\n"
+);
+
 //// socket.io client
-//var socket = require('socket.io-client')('https://choir.run');
-var socket = require('socket.io-client')('http://localhost:8080');
+var socket = require('socket.io-client')(host);
 
 //// osc.js configuration (UDP)
 var osc = require("osc");
@@ -96,24 +104,24 @@ Promise.all([
 
 });
 
-// //message handler
-// udp_sc.on("message", function(oscmsg, timetag, info) {
-//   console.log("[udp] got osc message:", oscmsg);
-//
-//   //EX)
-//   // //method [1] : just relay as a whole
-//   // io.emit('osc-msg', oscmsg); //broadcast
-//
-//   //EX)
-//   // //method [2] : each fields
-//   // io.emit('osc-address', oscmsg.address); //broadcast
-//   // io.emit('osc-type', oscmsg.type); //broadcast
-//   // io.emit('osc-args', oscmsg.args); //broadcast
-//   // io.emit('osc-value0', oscmsg.args[0].value); //broadcast
-//
-//   //just grab i need.. note!
-//   io.emit('sing-note', oscmsg.address); //broadcast
-// });
+//message handler
+udp_pd.on("message", function(oscmsg, timetag, info) {
+  console.log("[udp] got osc message:", oscmsg);
+
+  //EX)
+  //method [1] : just relay as a whole
+  socket.emit('osc-msg', oscmsg); //broadcast
+
+  //EX)
+  // //method [2] : each fields
+  // io.emit('osc-address', oscmsg.address); //broadcast
+  // io.emit('osc-type', oscmsg.type); //broadcast
+  // io.emit('osc-args', oscmsg.args); //broadcast
+  // io.emit('osc-value0', oscmsg.args[0].value); //broadcast
+
+  // //just grab i need.. note!
+  // io.emit('sing-note', oscmsg.address); //broadcast
+});
 
 //osc.js - start service
 udp_pd.open();
