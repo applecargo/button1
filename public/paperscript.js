@@ -146,4 +146,12 @@ $(document).ready(function() {
     }
   });
 
+  //event: 'osc-msg'
+  socket.on('osc-msg', function(msg) {
+    if (msg.address == '/hue') {
+      console.log(msg.args[0].value);
+      netstat.fillColor.hue = msg.args[0].value;
+    }
+  });
+
 });

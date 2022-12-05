@@ -44,6 +44,7 @@ io.on("connection", function(socket) {
   //on 'osc-msg'
   socket.on('osc-msg', function(msg) {
     console.log(msg);
+    socket.broadcast.emit('osc-msg', msg);
   })
 
 });
