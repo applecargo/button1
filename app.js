@@ -51,7 +51,8 @@ io.on("connection", function(socket) {
 
 //listen
 var port = process.env.PORT || 8080;
-fastify.listen(port, function (err, address) {
+fastify.listen(port, '0.0.0.0', function (err, address) {
+// -> https://github.com/fastify/fastify/issues/1620
   if (err) {
     fastify.log.error(err)
     process.exit(1)
